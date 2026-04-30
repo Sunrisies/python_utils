@@ -191,6 +191,21 @@ fn main() {
 When we compile this code, we get an error with this core message:
 
 ```text
+error[E0277]: `Rectangle` doesn't implement `std::fmt::Display`
+  --> src/main.rs:12:25
+   |
+12 |     println!("rect1 is {rect1}");
+   |                        -^^^^^-
+   |                        ||
+   |                        |`Rectangle` cannot be formatted with the default formatter
+   |                        required by this formatting parameter
+   |
+   = help: the trait `std::fmt::Display` is not implemented for `Rectangle`
+   = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+   = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `rectangles` (bin "rectangles") due to 1 previous error
 
 ```
 
@@ -208,6 +223,8 @@ implementation of `Display` to use with `println!` and the `{}` placeholder.
 If we continue reading the errors, we’ll find this helpful note:
 
 ```text
+   |                        |`Rectangle` cannot be formatted with the default formatter
+   |                        required by this formatting parameter
 
 ```
 
@@ -220,12 +237,33 @@ we can see its value while we’re debugging our code.
 Compile the code with this change. Drat! We still get an error:
 
 ```text
+error[E0277]: `Rectangle` doesn't implement `Debug`
+  --> src/main.rs:12:31
+   |
+12 |     println!("rect1 is {:?}", rect1);
+   |                        ----   ^^^^^ `Rectangle` cannot be formatted using `{:?}` because it doesn't implement `Debug`
+   |                        |
+   |                        required by this formatting parameter
+   |
+   = help: the trait `Debug` is not implemented for `Rectangle`
+   = note: add `#[derive(Debug)]` to `Rectangle` or manually `impl Debug for Rectangle`
+   = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider annotating `Rectangle` with `#[derive(Debug)]`
+   |
+ 1 + #[derive(Debug)]
+ 2 | struct Rectangle {
+   |
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `rectangles` (bin "rectangles") due to 1 previous error
 
 ```
 
 But again, the compiler gives us a helpful note:
 
 ```text
+   |                        required by this formatting parameter
+   |
 
 ```
 

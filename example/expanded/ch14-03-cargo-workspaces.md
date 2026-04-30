@@ -155,6 +155,8 @@ package that has our library. First, we’ll need to add a path dependency on
 <span class="filename">Filename: adder/Cargo.toml</span>
 
 ```toml
+[dependencies]
+add_one = { path = "../add_one" }
 
 ```
 
@@ -237,6 +239,8 @@ so that we can use the `rand` crate in the `add_one` crate:
 <span class="filename">Filename: add_one/Cargo.toml</span>
 
 ```toml
+[dependencies]
+rand = "0.8.5"
 
 ```
 

@@ -322,6 +322,12 @@ _Cargo.toml_ file for `hello_macro_derive`:
 <Listing file-name="hello_macro_derive/Cargo.toml">
 
 ```toml
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = "2.0"
+quote = "1.0"
 
 ```
 
@@ -497,6 +503,9 @@ would be regular dependencies; if not, you can specify them as `path`
 dependencies as follows:
 
 ```toml
+[dependencies]
+hello_macro = { path = "../hello_macro" }
+hello_macro_derive = { path = "../hello_macro/hello_macro_derive" }
 
 ```
 
